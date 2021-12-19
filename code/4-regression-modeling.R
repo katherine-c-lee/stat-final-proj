@@ -57,8 +57,8 @@ p = plot_glmnet(lasso_fit, school_train, features_to_plot = 6,
 ggsave(filename = "results/lasso-trace-plot.png", 
        plot = p, 
        device = "png", 
-       width = 6, 
-       height = 4)
+       width = 7, 
+       height = 5)
 
 # extract features selected by lasso and their coefficients
 beta_hat_std = extract_std_coefs(lasso_fit, school_train, 

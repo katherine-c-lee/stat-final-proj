@@ -28,6 +28,7 @@ p = school_train %>%
              linetype = "dashed") +
   labs(x = "Crimes Per 1000 Students", 
        y = "Number of Schools") +
+  theme(text = element_text(size = 12)) +
   theme_bw()
 p
 
@@ -43,17 +44,19 @@ p_sqrt = school_train %>%
   geom_histogram(bins = 30) +
   geom_vline(xintercept = sqrt(mean_crimes_per1000),
              linetype = "dashed") +
-  labs(x = "Crimes Per 1000 Students (Sqrt Transformed)", 
+  labs(x = "(Sqrt) Crimes Per 1000 Students", 
        y = "Number of Schools") +
+  theme(text = element_text(size = 9)) +
   theme_bw()
 p_sqrt
 
-# save the histogram
-ggsave(filename = "results/response-hist-trans.png", 
-       plot = p_sqrt, 
+p_tgt = plot_grid(p, p_sqrt)
+ggsave(filename = "results/response-hist-both.png", 
+       plot = p_tgt, 
        device = "png", 
-       width = 3, 
-       height = 3)
+       width = 7, 
+       height = 4)
+
 
 # top 10 schools by number of crimes
 school_train %>%
@@ -87,7 +90,8 @@ corrplot(cor(school_train_numvars_s),        # Correlation matrix
          col = NULL)       # Color palette
 
 school_train_numvars_c = school_train %>%
-  select(c("percent_no_highschool", "percent_only_highschool", "percent_all_college", 
+  select(c("percent_no_highschool", "percent_only_highschool", 
+           "percent_all_college", 
            "Unemployment_rate_2015", "white_pop",
            "black_pop", "Poverty_all_population",
            "minor_poverty", "Household_income"))
@@ -102,7 +106,8 @@ corrplot(cor(school_train_numvars_c),        # Correlation matrix
          col = NULL)       # Color palette
 
 school_train_agg = school_train %>%
-  select(c("percent_no_highschool", "percent_only_highschool", "percent_all_college", 
+  select(c("percent_no_highschool", "percent_only_highschool", 
+           "percent_all_college", 
            "Unemployment_rate_2015", "white_pop",
            "black_pop", "Poverty_all_population",
            "minor_poverty", "Household_income", 
@@ -125,48 +130,63 @@ corrplot(cor(school_train_agg),        # Correlation matrix
 ## to prevent selection bias, use training set to explore response-feature
 
 # Crimes vs. Firearm / Explosives Threats
-school_train %>%
+p_firearm = school_train %>%
   select(crimes_per1000, threats_w_firearm_incidents) %>%
   ggplot(aes(x = threats_w_firearm_incidents, y = sqrt(crimes_per1000))) +
   geom_point() +
   geom_smooth(method = "lm", formula = "y~x", se = FALSE) +
-  labs(x = "Incidents of Threats with Firearms / Explosives",
-       y = "Crimes Per 1000 Enrolled Students") +
+  labs(x = "Threats w Firearms/Explosives",
+       y = "(Sqrt) Crimes Per 1000 Students") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_bw()
 
+# Crimes vs. Poverty Rate
+p_poverty = school_train %>%
+  select(crimes_per1000, Poverty_all_population) %>%
+  ggplot(aes(x = Poverty_all_population, y = sqrt(crimes_per1000))) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", se = FALSE) +
+  labs(x = "Poverty Rate",
+       y = "(Sqrt) Crimes Per 1000 Students") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw()
+
+# Crimes vs. Unemployment Rate
+p_unemploy = school_train %>%
+  select(crimes_per1000, Unemployment_rate_2015) %>%
+  ggplot(aes(x = Unemployment_rate_2015, y = sqrt(crimes_per1000))) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y~x", se = FALSE) +
+  labs(x = "Unemployment Rate",
+       y = "(Sqrt) Crimes Per 1000 Students") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw()
+
+p_pov_firearm = plot_grid(p_firearm, p_poverty, p_unemploy, nrow = 1)
+ggsave(filename = "results/scatter-both.png", 
+       plot = p_pov_firearm, 
+       device = "png", 
+       width = 8, 
+       height = 3)
+
 # Crimes vs. School Type
-school_train %>%
+p_type = school_train %>%
   select(crimes_per1000, school_type) %>%
   ggplot(aes(x = school_type, y = sqrt(crimes_per1000))) +
   geom_boxplot(aes(fill = factor(school_type))) +
-  labs(x = "School Type", y = "Crimes Per 1000 Enrolled Students 
-       (Square Root Transformed") +
+  labs(x = "School Type", y = "(Sqrt) Crimes Per 1000 Students") +
   scale_x_discrete(labels = c('Regular School',
                               'Special Education School',
                               'Vocational School')) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_bw() +
   theme(legend.position = "none")
+ggsave(filename = "results/school-type-box.png", 
+       plot = p_type, 
+       device = "png", 
+       width = 8, 
+       height = 5)
 
-# Crimes vs. Unemployment Rate
-school_train %>%
-  select(crimes_per1000, Unemployment_rate_2015) %>%
-  ggplot(aes(x = Unemployment_rate_2015, y = sqrt(crimes_per1000))) +
-  geom_point() +
-  geom_smooth(method = "lm", formula = "y~x", se = FALSE) +
-  labs(x = "County Unemployment Rate",
-       y = "Crimes Per 1000 Enrolled Students") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  theme_bw()
 
-# Crimes vs. Poverty Rate
-school_train %>%
-  select(crimes_per1000, Poverty_all_population) %>%
-  ggplot(aes(x = Poverty_all_population, y = sqrt(crimes_per1000))) +
-  geom_point() +
-  geom_smooth(method = "lm", formula = "y~x", se = FALSE) +
-  labs(x = "County Poverty Rate",
-       y = "Crimes Per 1000 Enrolled Students (Square Root Transformed)") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  theme_bw()
+
+

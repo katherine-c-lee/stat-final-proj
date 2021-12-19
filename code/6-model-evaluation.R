@@ -27,12 +27,6 @@ simple_rmse_sqrt = sqrt(
 simple_rmse = sqrt(
   mean((simple_pred^2-(school_test$crimes_per1000_sqrt)^2)^2))
 
-
-lm_RMSE_sqrt = sqrt(
-  mean((lm_predictions-(school_test$crimes_per1000_sqrt))^2))
-lm_RMSE = sqrt(
-  mean((lm_predictions^2-(school_test$crimes_per1000_sqrt)^2)^2))
-
 # evaluate OLS RMSE
 lm_predictions = predict(lm_fit, newdata = school_test)
 lm_RMSE_sqrt = sqrt(
@@ -54,11 +48,6 @@ ridge_RMSE = sqrt(
 
 ridge_RMSE_fix = sqrt(
   mean((ridge_predictions^2-(school_test$crimes_per1000_sqrt)^2)^2))
-
-school_train %>%
-ggplot(aes(x = crimes_per1000_sqrt, y = ridge_pred_train)) +
-  geom_point() +
-  geom_abline(slope = 1)
 
 # evaluate lasso RMSE
 lasso_predictions = predict(lasso_fit, 
@@ -102,7 +91,7 @@ rf_RMSE_sqrt = sqrt(mean((rf_predictions-school_test$crimes_per1000_sqrt)^2))
 rf_RMSE = sqrt(mean((rf_predictions^2-(school_test$crimes_per1000_sqrt)^2)^2))
 
 # evaluate Boosting RMSE
-# n.trees = 242 comes from files 5-tree-modeling, line 188
+# n.trees = 518 comes from files 5-tree-modeling, line 188
 gbm_predictions = predict(gbm_fit_tuned, n.trees = 518, 
                               newdata = school_test) 
 gbm_RMSE_sqrt = sqrt(mean((gbm_predictions-school_test$crimes_per1000_sqrt)^2))

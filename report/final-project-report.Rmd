@@ -28,13 +28,11 @@ knitr::include_graphics("../results/coverpage.jpg")
 
 # Executive Summary
 
-**Problem.** Sandy Hook Elementary School and Santa Fe High School are synonymous with school shootings and violence. While national trends show that violence and victimization has declined from 1992 to 2017, there is a sentiment that the number of school shootings is increasing, mainly due to a steep increase in multiple-victim homicides (as opposed to single-victim homicides), revealing that the topic of school violence is still very relevant. On top of this, smaller instances of school crime are often forgotten even though they are still abundant and extremely detrimental to educational outcomes and children saftey. For our final project, we decided to look into which variables were predictive of crimes and incidents of violence across US schools throughout 2015. While only analyzing 2015 school trends inherently limits the generalizability of our results, we believe the analysis draws high-level analyses about school crime trends.
+**Problem.** Sandy Hook Elementary School and Santa Fe High School are synonymous with school shootings and violence. While national trends show that violence and victimization has declined from 1992 to 2017, there is a sentiment that the number of school shootings is increasing, mainly due to a steep increase in multiple-victim homicides (as opposed to single-victim homicides), revealing that the topic of school violence is still very relevant. On top of this, smaller instances of school crime are often forgotten even though they are still abundant and extremely detrimental to educational outcomes and children safety. For our final project, we decided to look into which variables were predictive of crimes and incidents of violence across US schools throughout 2015. While only analyzing 2015 school trends inherently limits the generalizability of our results, we believe the analysis draws high-level analyses about school crime trends.
 
-**Data.** We draw from two different types of datasets: school-level data and county-level data. School-level data from the [Urban Institute Education Portal](https://educationdata.urban.org/documentation/schools.html#overview) was used to see what school-specific features may be predictive of school crime. Using this portal, we were able to access data from: National Center for Education Statistics’ Common Core of Data (CCD), the Civil Rights Data Collection (CRDC), the US Department of Education’s EDFacts, and IPUMS’ National Historical Geographic Information System (NHGIS). Specifically, we pulled: school-level directory / geographic data, school finance data, teacher and staff data, discipline instances, and crime incidences. Our county-level data was to analyze any macro-trends that predict school crime. This county level data came from [US Economic Research Service](https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/) (for unemployment, education, and poverty rate estimates), [US Quarterly Census of Employment and wages](https://markbergen-shiny.shinyapps.io/county_data_dashboard_v2/)(for wage data), and [Census Bureau's Demographic data](https://data.world/bdill/county-level-population-by-race-ethnicity-2010-2019) (for general population demographic data). Our response variable was total crime per 1,000 students enrolled. We created this variable by adding a variety of crime incidents (rape, assault, robery, etc.) and dividing it by the respecitve school enrollment. 
+**Data.** We draw from two different types of datasets: school-level data and county-level data. We used school-level data from the [Urban Institute Education Portal](https://educationdata.urban.org/documentation/schools.html#overview) to understand what school-specific features may be predictive of school crime. Using this portal, we were able to access data from: National Center for Education Statistics’ Common Core of Data (CCD), the Civil Rights Data Collection (CRDC), the US Department of Education’s EDFacts, and IPUMS’ National Historical Geographic Information System (NHGIS). Specifically, we pulled: school-level directory / geographic data, school finance data, teacher and staff data, discipline instances, and crime incidences. We used county-level data to analyze school crime macro-trends. This county-level data came from [US Economic Research Service](https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/), [US Quarterly Census of Employment and wages](https://markbergen-shiny.shinyapps.io/county_data_dashboard_v2/), and [Census Bureau's Demographic data](https://data.world/bdill/county-level-population-by-race-ethnicity-2010-2019). Specifically, we pulled: unemployment, education, poverty, wage, and demographic data. Our response variable was total crime per 1,000 students enrolled. We created this variable by adding a variety of crime incidents (rape, assault, robbery, etc.) and dividing it by the schools' respective student enrollment. 
 
-All macro-data was at the county-level, each row having a unique County FIPS code. This FIPS code was used to match to each shcool's FIPS code. 
-
-**Analysis.** Before running any analyses, we split our data into a training dataset and a testing dataset. Because of the heavily-skewed nature of our response variable, total crime incidents per 1,000 students, we square-root transformed the response, which resulted in more symmetric data. Then, on our train data, we explored our data to understand correlations between variables and the response. We also plotted correlation matrices to understand how our predictor variables interacted with each other. To understand the predictors of total crime and make a predictive model, we  built five different cross-validated models, with the end goal of selecting the best model with the best performance. Specifically, we built a ridge regression, Lasso regression, pruned regression decision tree, random forest, and boosting model. Both penalized regression models gave similar RMSEs, with the Lasso method yielding slightly better predictions. Of the tree-based models, the random forest and boosting model greatly outperformed the regular regression decision tree. The Random Forest had the lowest test error of the tree-based models, and served as the best predictive model overall.
+**Analysis.** Before running any analyses, we split our data into a training dataset and a testing dataset. Because of the heavily-skewed nature of our response variable, total crime incidents per 1,000 students, we square-root transformed the response, which resulted in more symmetric data. Then, on our train data, we explored our data to understand correlations between the features (through correlation plots) and between the features and the response. To understand the predictors of total crime and make a predictive model, we  built five different cross-validated models, with the end goal of selecting the best model with the best performance. Specifically, we built a ridge regression, Lasso regression, pruned regression decision tree, random forest, and boosting model. Both penalized regression models gave similar RMSEs, with the Lasso method yielding slightly better predictions. Of the tree-based models, the random forest and boosting model greatly outperformed the regular regression decision tree. The Random Forest had the lowest test error of the tree-based models, and served as the best predictive model overall.
 
 **Conclusions.** Throughout all models, we consistently saw similar variables surface as highly predictive of total crime. In general, we saw FINISH
 
@@ -46,14 +44,14 @@ All macro-data was at the county-level, each row having a unique County FIPS cod
 
 # Introduction
 
-**Background.** Sadly, school violence has always been a part of the United States' education system. From 2017-2018, 80% of public schools recorded one or more incidents of violence, translating to a crime rate of 29 incidents per 1,000 students enrolled.^[School Crime: Fast Facts. (n.d.). https://nces.ed.gov/fastfacts/display.asp?id=49.] 
-Not all recorded incidents of violence and crimes were reported to the police, suggesting that the crime rate in America's schools is even higher. While the total victimization rate and the rates of specific crimes have declined since 1992, crime rates are still high, suggesting it is of vital importance to utilize various data sources to understand the highest risk factors for school crimes. Furthermore, a thorough analysis of school crime rates and predictive factors may help inform strategies to improve school safety precautions. Establishing reliable indicators of school crime and safety are important in ensuring the safety of schools across America.
+**Background.** School violence has always been a part of the United States' education system. From 2017-2018, 80% of public schools recorded one or more incidents of violence, translating to a crime rate of 29 incidents per 1,000 students enrolled.^[School Crime: Fast Facts. (n.d.). https://nces.ed.gov/fastfacts/display.asp?id=49.] 
+Not all recorded incidents of violence and crimes were reported to the police, suggesting that the crime rate in America's schools is even higher. While the total victimization rate and the rates of specific crimes have declined since 1992, crime rates are still high, suggesting it is very important to utilize various data sources to understand the factors that contribute to school crime. Furthermore, a thorough analysis of school crime rates and predictive factors may help inform strategies to improve school safety precautions. Establishing reliable indicators of school crime and safety are important in ensuring the safety of schools across America.
 
-Prior research and articles have shown that school crime are influenced by a variety of factors. For example, research has shown that higher use of police in schools is associated with more school crimes.^[Gottfredson, D., Na, C., (2011). Police Officers in Schools: Effects on School Crime and the Processing of Offending Behaviors] Moreover, trends show that students residing in rural areas had higher rates of total victimization than students residing in suburban areas, suggesting crime rate differences across school geographies.^[National Center for Education Statistics. (n.d.). Indicators of School Crime and Safety: 2015. https://bjs.ojp.gov/content/pub/pdf/iscs15.pdf] Despite past research, there is much more to be learned and there is insufficient research regarding school crime rates, school-specific features, and macroeconomic indicators. 
+Prior research and articles have shown that school crime are influenced by a variety of factors. For example, research has shown that higher use of police in schools is associated with more school crimes.^[Gottfredson, D., Na, C., (2011). Police Officers in Schools: Effects on School Crime and the Processing of Offending Behaviors] Moreover, trends show that students residing in rural areas had higher rates of total victimization than students residing in suburban areas, suggesting crime rate differences across school geographies.^[National Center for Education Statistics. (n.d.). Indicators of School Crime and Safety: 2015. https://bjs.ojp.gov/content/pub/pdf/iscs15.pdf] Despite past research, there is much more to be learned and there is insufficient research regarding the relationship between school crime rates, school-specific features, and macroeconomic indicators. 
 
-**Analysis goals.** Given school crime can be attributed to a variety of factors, including both school-specific variables and demographic variables, we explored how total crime rates (total crime per 1000 enrolled students) are affected by various school and demographic features. Specifically, we were interested in what kind of factors, either school-specific or demographic-specific, and which specific variables are most predictive in school crime rates.
+**Analysis goals.** Given school crime can be attributed to a variety of factors, including both school-specific variables and demographic/county-level variables, we explored how total crime rates (total crime per 1000 enrolled students) are affected by various school and demographic features. Specifically, we were interested in what kind of factors, either school-specific or county-specific, and which specific variables are most predictive in school crime rates. Some examples of school-specific features that are included in our dataset are: school type, whether the school is a charter school, how many security guards are employed, and the average teacher salary. Some examples of county-level features that we included are: the percentage of the county population that attended college, the proportion of the population that are white, and labor force participation. We built a series of regression models and tree-based models to predict school crime rates, given school-specific features and county-level features, on our training dataset, and evaluated the success of each model by comparing the model predictions to actual observed rates in our testing dataset (using RMSE). 
 
-**Significance.** Our analysis will contribute to research regarding school crime risk factors and inform government officials or school administrators what factors are predictive of school crime. This will help support efforts to minimize school crime and improve school safety. For instance, we believe our findings can help schools allocate budgets more effectively, create systems to track possible increases in crime before they happen, or even give local goverments trying to reduce school crime some direction with regard to which macroeconomic factors they should begin targeting. 
+**Significance.** Our analysis will contribute to research regarding school crime risk factors and inform government officials or school administrators what factors are predictive of school crime. This will help support efforts to minimize school crime and improve school safety. For instance, we believe our findings can help schools allocate budgets more effectively, create systems to track possible increases in crime before they happen, or even give local goverments some direction with regard to which macroeconomic factors they should begin targeting to reduce school crime rates. 
 
 \newpage
 
@@ -72,7 +70,7 @@ Because we were also interested in broader demographic data, we drew from variou
 
 For data cleaning, we started by examining each dataset in depth to determine which features and observations to keep. 
 
-In the school-specific datasets, we first transformed all negative values to NA values, since negative values imply that the data was missing/not reported or not applicable, per the Education Data Portal. Then we dropped all features that had more than 85% NA values, and dropped repeat observations and observations with any NA feature values. We dropped NA values for consistency purposes, as many of the data mining methods we employed require that all variables be populated with non-NA fields. In the directory dataset, one important feature is the degree of urbanization (urban-centric locale) of the school, which was coded with 12 levels, so we collapsed the categorical variable into 4 broader levels, including city, suburb, town, and rural. After cleaning each individual dataset, we merged the school-specific sets by the schools' unique NCES identification number. 
+In the school-specific datasets, we first transformed all negative values to NA values, since negative values imply that the data was missing/not reported, not applicable or not interpretable, per the Education Data Portal. Then we dropped all features that had more than 85% `NA` values, and dropped repeat observations and observations with any `NA` feature values. We dropped `NA` values for consistency purposes, as many of the data mining methods we employed require that all variables be populated with non-NA fields. In the directory dataset, one important feature is the degree of urbanization (urban-centric locale) of the school, which was coded with 12 levels, so we collapsed the categorical variable into 4 broader levels, including city, suburb, town, and rural. After cleaning each individual dataset, we merged the school-specific sets by the schools' unique NCES identification number. 
 
 For the macro-level county datasets, we first filtered the data to include only 2015 data (except poverty estimates because 2015 data was not available). We renamed variables for clarity and computed various race metrics as a percentage of population for comparability purposes. Each school is associated with a county-specific FIPS code and the macro-level county data includes observations for each county, which allowed us to merge in the macro-level county data in with the school-specific data, resulting in our final dataset that we used for analysis.
 
@@ -84,11 +82,11 @@ Our cleaned and merged final dataset has a total of 66,694 observations, corresp
 
 ### Response Variable
 
-Our response variable is the number of crimes per 1000 students enrolled (square root transformed). In the criminal incident dataset, we created our response variable by summing rape incidents, sexual battery incidents, robberies and attacks to get a high level variable that captured crime rates. We also transformed the total crime figure to be per 1000 students enrolled (by dividing by the school's enrollment and then multiplying by 1000), to improve comparability of schools on a 'per student enrolled' basis as it inherently controls for school size variability. Then we square root transformed the response to obtain a more "symmetric" variable. 
+Our response variable is the number of crimes per 1000 students enrolled (square root transformed). We created our response variable by summing rape incidents, sexual battery incidents, robberies and attacks to get a high level variable that captured crime rates. We also transformed the total crime figure to be per 1000 students enrolled (by dividing by the school's enrollment and then multiplying by 1000), to improve comparability of schools on a 'per student enrolled' basis as it inherently controls for school size variability. Then we square root transformed the response to obtain a more "symmetric" variable. 
 
 ### Features
 
-In our dataset, we included 46 explanatory variables in our analysis, which fall into two broad categories: school-specific factors and macro/county-level factors. For a detailed specification of these variables, refer to Appendix \@ref(appendix).
+We included 45 explanatory variables in our analysis, which fall into two broad categories: school-specific factors and macro/county-level factors. For a detailed specification of these variables, refer to Appendix \@ref(appendix).
 
 ## Data allocation
 
@@ -98,66 +96,50 @@ After data cleaning, we split our dataset into a training dataset and a testing 
 
 ### Response
 
-We first explored the response variable's distribution. As seen in the histogram of total crimes per 1000 students variable (Figure \@ref(fig:response-histogram)). The histogram is very right-skewed, indicating that the dataset contains a number of outliers with extremely high crime rates. The mean is 19.3 crimes per 1000 enrolled students. To account for this, we square root transformed the response variable, which resulted in a distribution shown in Figure \@ref(fig:response-histogram-transformed)). For our analyses and model building, we used the transformed response.
+We first explored the response variable's distribution. As seen in the histogram of total crimes per 1000 students variable (left plot of Figure \@ref(fig:response-histogram)). The histogram is very right-skewed, indicating that the dataset contains a number of outliers with extremely high crime rates. The mean is 19.3 crimes per 1000 enrolled students. To account for this, we square root transformed the response variable, which resulted in a distribution shown in the right plot of Figure \@ref(fig:response-histogram). For our analyses and model building, we used the transformed response.
 
+```{r response-histogram, fig.width = 6, fig.height = 5, out.width = "90%", fig.cap = "Distribution of Crime Rate (vertical dashed line indicates the mean)", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/response-hist-both.png")
+```
 We proceeded to determine which schools had extreme response rates by looking at the sorted data. The sorted data (Table \@ref(tab:top-10-schools)) shows that Maple Lane School had the highest crime rate by far, more than double the second highest ranked school. Further research shows that Maple Lane School was a juvenile corrections facility that closed in 2010, indicating that the observation should not be in the dataset to begin with.^[Turn Maple Lane into prison center? Allen, Marqise. https://www.theolympian.com/news/local/article25274248.html] To account for this, we dropped Maple Lane School from the training set.
 
-```{r response-histogram, out.width = "60%", fig.cap = "Distribution of Crime Rate; vertical dashed line indicates the mean.", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/response-hist-whole.png")
-```
-
-```{r response-histogram-transformed, out.width = "60%", fig.cap = "Sqrt Transformed Distribution of Crime Rate; vertical dashed line indicates the mean.", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/response-hist-trans.png")
-```
-
 ```{r top-10-schools, message = FALSE, echo = FALSE}
-
 read_tsv("../results/top-10-schools-data.tsv") %>%
   kable(format = "latex", row.names = NA, 
         booktabs = TRUE, digits = 2, 
         col.names = c("School", "Crimes per 1000 Students"),
-        caption = "Top ten schools by crime rate 
-        (expressed as per 1000 students).") %>%
+        caption = "Top Ten Schools By Crime Rate") %>%
   kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
 ### Features
 
-Next, we explored high-level relationships and correlations of the predictor variables with the response variable. We first looked at correlations between a few school-specific features, as shown in Figure \@ref(fig:school-corrplot)). We observe a positive correlation between the number of full-time equivalent teachers and the number of full-time equivalent security guards as well as teacher salaries. We also a negative correlation between the number of full-time equivalent teachers and the number of students enrolled in free or reduced lunch. Moreover, there is a negative correlation between teacher salaries and the number of students enrolled in free or reduced lunch. 
+Next, we explored high-level relationships and correlations of the predictor variables with the response variable. We first looked at correlations between a few school-specific features, as shown in Figure \@ref(fig:school-corrplot). We observe a positive correlation between the number of full-time equivalent teachers and the number of full-time equivalent security guards as well as teacher salaries. We also a negative correlation between the number of full-time equivalent teachers and the number of students enrolled in free or reduced lunch. Moreover, there is a negative correlation between teacher salaries and the number of students enrolled in free or reduced lunch. 
 
 ```{r school-corrplot, out.width = "60%", fig.cap = "School-Specific Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
 knitr::include_graphics("../results/school-corrplot.png")
 ```
 
-We also looked at correlations between some county-level features, as shown in Figure \@ref(fig:county-corrplot). Firstly, we noted that, in general, county-level data exhbited much more multicollinearity. One one hand, many of these variables were directly related (completion of college and completion of higschool), while others had obvious relationships such as a lack of higschool correlating negativley with household income and positivley with unemployment, or completing all college has an extremeley high correlation with household income. One thing that jumped out was that the percent of white and balck populations was extremley negativley correlated, demonstrating how, to this day, US counties are still extremeley segregated.
+We also looked at correlations between some county-level features, as shown in Figure \@ref(fig:county-corrplot). In general, county-level data exhibited much more multicollinearity. Many of these variables are directly related (the rates of college completion is negatively correlated with the rates of individuals who only completed high school). Other variables had obvious relationships, such as the rate of individuals who did not complete high school correlating negatively with household income and positively with unemployment; or rates of college completion correlating with household income. Another notable relationship was the negative correlation between white and black populations, which demonstrates that, to this day, American counties are still extremely segregated.
 
 ```{r county-corrplot, out.width = "60%", fig.cap = "County-Level Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
 knitr::include_graphics("../results/county-corrplot.png")
 ```
 
-We also examined correlations across the different categories of variables (both school-specific and county-level) as shown in Figure \@ref(fig:county-school-corrplot). Once again, we see a lot of correlations that were expected such as high levels of minors in poverty was heavily correlated with free/reduced lunch programs. We did see inital relationships between a county's economic data and school resources (higher poverty rates correlated with lower teacher salaries). What was interesting was that supsensions, weapon and non weapon threats, did not correlate wiht any of the sociodemographic factors. This is beginning to show that the county-level macro data does have a direct impact on the resources of a school (i.e. teacher salary) but not necssarily in certain crime or disciplinary factors. 
+We also examined correlations across the different categories of variables (both school-specific and county-level) as shown in Figure \@ref(fig:county-school-corrplot). Once again, we observe a number of expected correlations (i.e. high rates of minors living in poverty is heavily correlated the rate of students enrolled in free/reduced lunch programs). Moreover, some relationships between a county's economic data and school resources began to emerge (i.e. higher poverty rates are correlated with lower teacher salaries). It was interesting to see that suspensions and number of threats did not correlate with any of the county-level socio-demographic factors. This analysis shows that the county-level macro data does have a direct impact on some of the resources of a school (i.e. teacher salary) but not necessarily on certain crime or disciplinary factors. 
 
-```{r county-school-corrplot, out.width = "60%", fig.cap = "School-Specific and County-Level Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+```{r county-school-corrplot, out.width = "75%", fig.cap = "School-Specific and County-Level Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
 knitr::include_graphics("../results/county-school-corrplot.png")
 ```
 
-For further analysis, we explored how three variables (total poverty, unemployment, and threats) related to our response variable (total school crime) as an initial indicator to possible models. We did this by plotting scatter plots with our train data, as seen in Figures \@ref(fig:scatterplots1), \@ref(fig:scatterplots2) , \@ref(fig:scatterplots3), and \@ref(fig:scatterplots4) 
+For further analysis, we explored how three variables (total poverty, unemployment, and threats) related to our response variable (total school crime) as an initial indicator to possible models. We did this by plotting scatterplots with our train data, along with a linear regression line to further illustrate the relationship, as seen in Figure \@ref(fig:scatterplots1). By inspection, threats with firearms or explosives, poverty rates, and unemployment rates were all positively correlated with crime rates. However, the relationship between threats and crimes is much stronger than the relationship between poverty / unemployment and crimes.   
 
-```{r scatterplots1, out.width = "60%", fig.cap = "Crimes and Poverty Scatter Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/crime_vs_poverty.png")
+```{r scatterplots1, out.width = "100%", fig.cap = "Crimes and Poverty Scatter Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/scatter-both.png")
 ```
-
-```{r scatterplots2, out.width = "60%", fig.cap = "Crimes and Poverty Scatter Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/crime_vs_unemployemnt.png")
-```
-
-```{r scatterplots3, out.width = "60%", fig.cap = "Crimes and Incidents of Threats", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/Crimes_vs_threats.png")
-```
-
-
-```{r scatterplots4, out.width = "60%", fig.cap = "Crimes for different School Types", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/crimes_vs_schooltype.png")
+We also explored how school type was related to school crimes. By inspection of Figure \@ref(fig:box1), there are significant outliers for each of the three types of schools, but the maximum for special education schools is the highest. The maximum crime rate out of all vocational schools was the lowest. 
+```{r box1, out.width = "90%", fig.cap = "Crimes and School Type Box Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/school-type-box.png")
 ```
 \newpage
 
@@ -167,30 +149,22 @@ knitr::include_graphics("../results/crimes_vs_schooltype.png")
 
 ### Ordinary least squares
 
-As a starting point, we built an an OLS regression with all 46 explanatory variables. Extended results are reported in the Appendix \@ref(appendix2), figure  \@ref(fig:olsSummary). The Rsquared of the regression was 0.144 - we believe that severe skew in our data and multicollinearity between our predictor variables decreased the accuracy of our model, and therefore was not our main predictive method. 
+As a starting point, we built an ordinary least squares regression with all 45 explanatory variables. However, when considering the normality assumptions, we note that our response distribution, even after applying a square root transformation, is not normally distributed. Moreover, as demonstrated in our correlation plots, many of the features are correlated. Extended results are reported in the Appendix \@ref(appendix2) (Figure \@ref(fig:olsSummary)). The R-squared of the regression was 0.144, signifying a rather weak relationship between the model and the response. We believe that severe skew in our data and multicollinearity between our predictor variables decreased the accuracy of our model.
 
-That being said, we were able to see many signifcant variables: the type of locale the schools are in, a variety of quantity teacher metrics, the amounts of threats each school was reported with, race demographic data, and almost all economic data (unemployment, poverty, weekly wage, etc.)
+However, there were a number of significant variables, including: the urbanization of the school location, a variety of quantity teacher metrics, the amounts of threats each school was reported with, race demographic data, and almost all economic data (unemployment, poverty, weekly wage, etc.).
 
-### Penalized regression
+### Penalized regressions
 
-Because of the large amount of variables and multicollinearity used in the OLS, we attempted both Lasso and ridge as an attempt to combat these issues. Furthermore, the OLS gave so many significant variables, we hope these shrinkage tecniques (specifically Lasso) can help with interpretation. 
+Despite identifying significant variables from the ordinary least squares regression, the method utilized all of 45 explanatory variables (with high intercorrelations), which could lead to a cost in variance, and thus inaccurate predictions. To combat these issues, we built and evaluated shrinkage models, namely ridge regression and lasso regression, with the goal of fitting a more parsimonious and interpretable model.^[Note: we did not display elastic net results because the elastic net selected an $\alpha$ value of 1, which reduces to the lasso regression] Specifically, ridge regression is more stable when handling correlated features, as it "splits the credit" among correlated features, and lasso regression penalizes many features to 0, contributing to increased interpretability. For both penalized regression methods, we ran a 10-fold cross validation to optimize the choice of regularization parameters ($\lambda$).
 
-We did 10-fold cross validation to optimize the choice of regularization parameters for both penalized regressions - the CV plots can be seen in  figures \@ref(fig:ridgecv) (for ridge) and \@ref(fig:lassocv) (for Lasso)
-
-```{r ridgecv, out.width = "60%", fig.cap = "Cross Validation for Ridge Regression", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/ridgefit_cv.png")
+```{r ridgecv, out.width = "80%", fig.cap = "Cross Validation for Ridge Regression", fig.align='center', echo = FALSE, fig.pos = "H"}
+#knitr::include_graphics("../results/ridge-cv.png")
+```
+```{r lassocv, out.width = "80%", fig.cap = "Cross Validation for Lasso Regression", fig.align='center', echo = FALSE, fig.pos = "H"}
+#knitr::include_graphics("../results/lasso-cv-plot.png")
 ```
 
-```{r lassocv, out.width = "60%", fig.cap = "Cross Validation for Lasso Regression", fig.align='center', echo = FALSE, fig.pos = "H"}
-knitr::include_graphics("../results/lasso-cv-plot.png")
-```
-
-For the lasso regression Figure \@ref(fig:lasso-trace-plot) shows the trace plot and Table \@ref(tab:lasso-coefficients) shows the selected features and their coefficients. Interestingly, at the 1 standard error rule value of lambda, the lasso regression only picks three variables: the amount of free or reduced lunches per 1,000 students, the percent of a count that identifies as black, and the amount of non-weapon threats a school receives. 
-
-
-```{r lasso-trace-plot, out.width = "90%", fig.cap = "Lasso trace plot.", fig.align='center', echo = FALSE}
-knitr::include_graphics("../results/lasso-trace-plot.png")
-```
+The lasso regression trace plot is shown in Figure \@ref(fig:lasso-trace-plot) and the selected features and respective coefficients are displayed in Table \@ref(tab:lasso-coefficients). We applied the one standard error rule to select the optimal $\lambda$ value, and we notice that the lasso regression selects three variables: the number of students receiving free or reduced lunches per 1000 enrolled students, the proportion of the county population that identifies as black, and the amount of non-weapon threats a school receives. 
 
 ```{r lasso-coefficients, message = FALSE, echo = FALSE}
 read_tsv("../results/lasso-features-table.tsv") %>%
@@ -202,10 +176,14 @@ read_tsv("../results/lasso-features-table.tsv") %>%
   kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
+```{r lasso-trace-plot, out.width = "90%", fig.cap = "Lasso Regression Trace Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/lasso-trace-plot.png")
+```
+
+[ why is this here ]
 Following, in \@ref(tab:regression-eval) are the results for tree based methods:
 
 ```{r regression-eval, message = FALSE, echo = FALSE}
-
 read_tsv("../results/model-evaluation-regression.tsv") %>%
   kable(format = "latex", row.names = NA, 
         booktabs = TRUE, digits = 2, 
@@ -218,66 +196,50 @@ read_tsv("../results/model-evaluation-regression.tsv") %>%
 
 ### Ordinary pruned tree
 
-Similar to what we did in regression, we start our tree-based method by predicting via a traditional decision tree. This time, we preformed cross validation on the number of terminal nodes. This resulted in reaching the max depth of 6 nodes. The CV plot can be seen in image \@ref(fig:treecv)
+In addition to regression methods, we also implemented tree-based methods to capture possible non-linear relationships between the features and the response. We began our tree-based modeling by prediction via a traditional decision tree, which offers the benefit of high interpretability. We selected the complexity of the decision tree based on cost complexity pruning and cross-validation. The cross-validation plot compared to the number of terminal nodes is displayed in Figure \@ref(fig:treecv). Based on the one-standard-error rule, we chose 6 terminal nodes. 
 
-````{r treecv, out.width = "60%", fig.cap = "Cross Validation for Tree", fig.align='center', echo = FALSE, fig.pos = "H"}
-
+````{r treecv, out.width = "60%", fig.cap = "Decision Tree: Cross Validation for Terminal Nodes", fig.align='center', echo = FALSE, fig.pos = "H"}
 knitr::include_graphics("../results/treenodes_cv_error.png")
-
 ```
 
-Using the optimal tree complexity, we prune into an optimal, tree which results in the following: 
+To obtain the optimal pruned tree, we specified the chosen complexity parameter and applied cost complexity pruning. This results in the decision tree displayed in Figure \@ref(fig:optimaltree). The path that leads to the greatest prediction of the square root transformed total crimes per 1000 enrolled students response is: the school experienced 1 or more no-weapon threats, more than 24 average student suspensions, and more than 638 students out of 1000 enrolled students receiving free or reduced price lunch. Logically, this path makes sense as more threats and more student suspensions are typically associated with unsafe school conditions, and more students enrolled in free or reduced priced lunches indicates a poorer county, which can be subject to higher crime rates.
 
-````{r optimaltree, out.width = "60%", fig.cap = "Optimally pruned tree", fig.align='center', echo = FALSE, fig.pos = "H"}
-
-knitr::include_graphics("../results/optimaltree.png")
-
+````{r optimaltree, out.width = "80%", fig.cap = "Pruned Decision Tree", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/pruned-tree.png")
 ```
-
-
 
 ### Random forest
 
-In order to improve the individual tree, we moved on to random forests. To optimize the random forest, we had to optimize both the number of trees (n) and the numbeer of variables selected at each partition (m). Because of the computation costs of random forests, we trained it on 5,000 observations of our train data. 
+In order to improve the predictions from the individual tree, we proceeded to fit a random forest, which involves growing deep decision trees in parallel. Bagging is achieved when considering all 45 features at each split point of the tree, which leads to high variance and inaccurate prediction performance. To account for this, when tuning the random forest, we optimized both the number of bootstrap samples, corresponding to the number of trees, ($n$), and the number of variables to sample at each split point ($m_{try}$). Because of the computation costs of random forests and computer issues, we trained it on 5,000 observations of our train data. 
 
-First, we chose 500 trees, as figure \@ref(fig:rfnumtrees) indicates that this is more than enough trees to achieve a consistntly minimum error. 
+First we trained a random forest with default settings, and visualized the fit displayed in Figure \@ref(fig:rfnumtrees), which plots the OOB error as a function of the number of trees. By inspection, the error flattens out as soon as the number of trees is large enough (in this case, the error stabilizes around 200 trees).
 
 
-````{r rfnumtrees, out.width = "60%", fig.cap = "Random Forest CV error based on number of trees", fig.align='center', echo = FALSE, fig.pos = "H"}
-
-knitr::include_graphics("../results/rf_numtrees.png")
-
+````{r rfnumtrees, out.width = "60%", fig.cap = "Default Random Forest OOB Error vs. Number of Trees", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/rf_fit.png")
 ```
 
-Once we had established that 500 trees were enough, we decided to tune for m. The out-of-bag error across many m values are is seen below in figure \@ref(fig:mtune). This tuning resulted in an ideal m value of 11 variables. After reaching a minimum at this variable level, the OOB error begins exhibiting overfitting as it begins to trend upward. 
+For the purpose of tuning $m_{try}$, we select 500 trees. We tune $m_{try}$ using a systematic approach by choosing a grid of values of $m_{try}$ and plotting the OOB error for 500 trees. Specifically, we trained the model using $m_{try}$ values ranging from 1 to 30. The OOB error for each value of $m_{try}$ is visualized in Figure \@ref(fig:mtune). By observation, the OOB error is minimized at a value of $m_{try} = 11$. After reaching a minimum at this value, the OOB error begins to exhibit overfitting as it begins to trend upward. 
 
-````{r mtune, out.width = "60%", fig.cap = "Random Forest OOB tuning for m parameter", fig.align='center', echo = FALSE, fig.pos = "H"}
-
-knitr::include_graphics("../results/m_oob.png")
-
+````{r mtune, out.width = "60%", fig.cap = "Tuned Random Forest OOB (m = 11)", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/rf_fit_tuned.png")
 ```
 
-Once we built the optimal random forest, we are able to plot the variable importance using purity and OOB variable importance. Both of these rankings for variable importance can be seen in figure \@ref(fig:rfimportance)
+Because we do not explicitly tune $n$, or the number of trees, we simply select the largest value, which is $n=500$. Then, we fit the random forest using $n=500$ and $m_{try} =11$. We then plotted the variable importance using the two types of variable importance, purity-based and OOB-based variable importance. The results from both of these variable importance measures is given in Figure \@ref(fig:rfimportance). By inspection, we observe that the number of no-weapon threats and the number of average suspensions of a school have the highest importance as measured by both the purity-based and OOB-based metrics. The proportion of the population that identifies as black, the proportion of the population that identifies as white, and the number of teachers in the previous school year are also variables that are important. This suggests that these variables are the most important in predicting total crimes across different schools in America.
 
-
-
-````{r rfimportance, out.width = "60%", fig.cap = "Optimal Random Forest variable importance", fig.align='center', echo = FALSE, fig.pos = "H"}
-
-knitr::include_graphics("../results/rf_variable_importance.png")
-
+````{r rfimportance, out.width = "80%", fig.cap = "Tuned Random Forest Variable Importance", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/rf_var_importance.png")
 ```
 
 ### Boosting
 
-Our last data mining method is boosting. To tune this model, we adapted both the depth of each individual 'weak-learner' (interaction depth) and the number of these 'weak-learners' (Number of trees) used per model. we played around with a variety of shrinkage factors before identifying 0.1 as working consistently well. Using the following plot seen in figure \@ref(fig:boostingtuning), we an see that we arrived at an interaction depth of 3 and 518 trees. 
+In addition to the random forest model, we also implemented a gradient boosting model, which is another method of aggregating multiple decision trees to improve prediction performance over a traditional decision tree. Boosting grows shallow decision trees sequentially, by considering a low-complexity weak learner (a shallow decision tree) and boosting the performance of the weak learning by applying an iterative method. For our first boosting model, we used default parameters (500 trees, an interaction depth of 1, and a shrinkage of 0.1). To tune this model, we adapted both the depth of each individual 'weak-learner' (interaction depth) and the number of 'weak-learners' (number of trees) used per model. After noticing that using a number of trees between 500 and 1000 was optimal, we tuned the interaction depth by testing interaction depth levels of 1, 2, and 3. By inspection of the cross-validation plot shown in Figure \@ref(fig:boostingtuning), we see that an interaction depth of 3 offers the lowest cross-validation error. Specifically, the cross-validation error reaches its minimum with 518 trees. 
 
-````{r boostingtuning, out.width = "60%", fig.cap = "Boosting - tuning interaction detph and number of tress", fig.align='center', echo = FALSE, fig.pos = "H"}
-
+````{r boostingtuning, out.width = "75%", fig.cap = "Boosting Tuning Interaction Depth and Number of Trees", fig.align='center', echo = FALSE, fig.pos = "H"}
 knitr::include_graphics("../results/interaction_depth_tuning.png")
-
 ```
 
-We are then able to judge variable importance by comparing purity-based importance. This can be seen in table \@ref(tab:boosting-coefficients)
+With the tuned boosting model using 518 trees and an interaction depth of 3, we judged variable importance by comparing purity-based importance. The ranking of variables based on purity-based importance is given in Table \@ref(tab:boosting-coefficients). Similar to the random forest method, the number of suspensions and the number of no-weapon threats rank high in terms of variable importance. 
 
 ```{r boosting-coefficients, message = FALSE, echo = FALSE}
 read_tsv("../results/top-10-features-boosting.tsv") %>%
@@ -288,37 +250,21 @@ read_tsv("../results/top-10-features-boosting.tsv") %>%
   kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
+In addition, we also examined partial dependence plots of average suspensions and the number of no-weapon threats, which are the two most important features, as shown in Figure \@ref(fig:pdp1). It is important to remember that because our tuned boosting model uses an interaction depth of 3, they are simply an approximation for illustrative purposes, but they nonetheless give a good representation of how each variable affects total crime. Taken together, Figure \@ref(fig:pdp1) suggests that schools that suspend more students and face more no-weapon threats face disproportionately higher crime rates.s
 
-Choosing intersting variables from the list of most important, we plot the partial dependence plots in figures \@ref(fig:pdp1), and \@(fig:pdp2). It is important to remmeber that because these plots use an interaction depth of three, they are simply an approximation for illustrative purposes, but they nonetheless give a good representation of how a variable affects crime. 
-
-Figure \@ref(fig:pdp1) seems to show that spending more on teachers helps up to a certian amount, and after that initial expenditures are not necessarily helpful. 
-
-````{r pdp1, out.width = "60%", fig.cap = "Teacher salaries dependence plot", fig.align='center', echo = FALSE, fig.pos = "H"}
-
-knitr::include_graphics("../results/salaries_dependence.png")
-
+````{r pdp1, out.width = "80%", fig.cap = "Average Suspensions and No-Weapon Threats Partial Dependence Plots", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/partial-dependence.png")
 ```
-
-Figure \@ref(fig:pdp2) shows that a few threats instantly increase the chances of a school facing more crime. But after the first threats, there isn't more additional crime from having even more. 
-
-````{r pdp2, out.width = "60%", fig.cap = "Registered threats dependence plot", fig.align='center', echo = FALSE, fig.pos = "H"}
-
-knitr::include_graphics("../results/threats_dependence.png")
-
-```
-Below is in table \@ref(tab:tree-evaluation) a summary of the tree performance: 
 
 ```{r tree-evaluation, message = FALSE, echo = FALSE}
 
-read_tsv("../results/model-evaluation-tree.tsv") %>%
-  kable(format = "latex", row.names = NA, 
-        booktabs = TRUE, digits = 2, 
-        col.names = c("Method", "RMSE (Transformed)", "RMSE"),
-        caption = "RMSE summary for Tree based methods") %>%
-  kable_styling(position = "center", latex_options = "HOLD_position")
-
+#read_tsv("../results/model-evaluation-tree.tsv") %>%
+  #kable(format = "latex", row.names = NA, 
+        #booktabs = TRUE, digits = 2, 
+        #col.names = c("Method", "RMSE (Transformed)", "RMSE"),
+        #caption = "RMSE summary for Tree based methods") %>%
+  #kable_styling(position = "center", latex_options = "HOLD_position")
 ```
-
 
 # Conclusions
 
@@ -329,14 +275,15 @@ read_tsv("../results/model-evaluation-total.tsv") %>%
   kable(format = "latex", row.names = NA, 
         booktabs = TRUE, digits = 2, 
         col.names = c("Method", "RMSE"),
-        caption = "RMSE summary for all data minig methods used") %>%
+        caption = "RMSE Summary for All Methods") %>%
   kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
-Table \@ref(tab:model-evaluation) shows the test RMSE for all the methods considered. Except for the OLS, the random forest and the boosted model have the lowest test errors. This is reasonable given these models’ tendencies to have high predictive accuracy. Between the two, the boosted model has the lowest test error, with a mean squared error of 0.000139, but it is closely followed by random forest, which has a mean squared error of 0.00141. Notably, however, the ridge, LASSO, and elastic net regressions perform about as well, with test MSEs of 0.000158, 0.000164, and 0.000161, respectively. Although OLS has the lowest training and test error, its adjusted R-squared value was only about 0.3, and there were too many features given the number of observations.
+Table \@ref(tab:model-evaluation) displays the test RMSE (untransformed) for all the methods considered. Based on RMSE, the random forest and boosting methods have the lowest test errors. This is reasonable given these models’ tendencies to have high predictive accuracy. Between the two, the boosting model has the lowest test error of 52.3 crimes per 1000 students, but its accuracy is comparable to the random forest method, which has a test error of 53.8 crimes per 1000 students. Notably, the tree-based methods perform better than the regression-based methods, namely OLS, a predictor that simply predicts the mean crime rate of the training set, ridge regression, and lasso regression. This ultimately points to the idea that the relationship between the response and the explanatory variables is not necessarily linear, explaining why the tree-based methods outperformed the regression-based methods.
 
-Regardless of these differences in test MSE, the methods overlap significantly in their identification of important variables from the larger set. For instance, the elastic net regression selects the following variables, which are also selected by LASSO and deemed significant in the OLS model: other providers ratio, unemployment, income inequality, housing overcrowding, residential segregation—non-White/White, homeownership, and physical inactivity. The random forest and boosting models both include low birthweight percentage, median income, and unemployment percentage in the top 10 most important variables, as measured by their contributions to node purity. 
+While we observe improved predictive performance across tree-based methods relative to regression-based methods, it is worth mentioning that the predictive performance across all fitted models is quite poor. This is likely explained by the idea that most of the variation in the data is random and not explainable by the selected predictor variables. Moreover, it could be that the dataset is not robust enough, in that there were a number of misreported values, as evidenced by the inclusion of Maple Lane School (which we subsequently dropped in )  
 
+Regardless of the test errors, all of the models overlap when considering important features. For example, the top features for the lasso regression included: the number of students receiving free/reduced priced lunch per 1000 enrolled students, the proportion of the population that identified as black, and the number of no-weapon threats. In the simple decision tree, we see that the first split point is the number of no-weapon threats, and a subsequent split point is based on the number of students receiving free/reduced priced lunch. Moreover, we see no-weapon threats and the black population are very important features in the random forest and boosting model as measured by the features' contribution to node purity. 
 
 ## Takeaways
 
@@ -432,7 +379,7 @@ Below are the 45 features we used for analysis. Words written in parentheses rep
 
 # Appendix: Other {#appendix2}
 
-```{r olsSummary, out.width = "60%", fig.cap = "OLS coefficients summaries", fig.align='center', echo = FALSE, fig.pos = "H"}
+```{r olsSummary, out.width = "90%", fig.cap = "OLS Coefficient Summary", fig.align='center', echo = FALSE, fig.pos = "H"}
 knitr::include_graphics("../results/OLS summary.JPG")
 ```
 

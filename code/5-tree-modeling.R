@@ -181,7 +181,7 @@ interaction_depth_tuning <- cv_errors %>%
 ggsave(filename = "results/interaction_depth_tuning.png", 
        plot = interaction_depth_tuning, 
        device = "png", 
-       width = 6, 
+       width = 7, 
        height = 4)
 
 optimal_trees = which.min(gbm_fit_3$cv.error)
@@ -203,8 +203,13 @@ summary(gbm_fit_tuned,
   write_tsv("results/top-10-features-boosting.tsv")
 
 # partial dependence plots (interaction depth 3)
-plot(gbm_fit_tuned, i.var = "avg_suspensions", n.trees = optimal_num_trees)
-plot(gbm_fit_tuned, i.var = "threats_no_weapon_incidents", 
+partial1 = plot(gbm_fit_tuned, i.var = "avg_suspensions", 
+                n.trees = optimal_num_trees)
+partial2 = plot(gbm_fit_tuned, i.var = "threats_no_weapon_incidents", 
      n.trees = optimal_num_trees)
-plot(gbm_fit_tuned, i.var = "salaries_teachers", n.trees = optimal_num_trees)
-
+p_partials = plot_grid(partial1, partial2)
+ggsave(filename = "results/partial-dependence.png", 
+       plot = p_partials, 
+       device = "png", 
+       width = 8, 
+       height = 3)
