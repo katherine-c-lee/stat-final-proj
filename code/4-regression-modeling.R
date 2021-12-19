@@ -11,7 +11,7 @@ school_train = read_tsv("data/clean/school_train.tsv") %>%
   select(-c(ncessch, year, county_code)) %>%
   filter(crimes_per1000 < max(crimes_per1000)) %>%
   mutate(crimes_per1000_sqrt = sqrt(crimes_per1000)) %>%
-  select(-c(crimes_per1000))
+  select(-c(crimes_per1000)) %>%
 
 ###################################### OLS #####################################
 lm_fit = lm(formula = crimes_per1000_sqrt ~ ., data = school_train)
