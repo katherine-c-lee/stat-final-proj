@@ -7,6 +7,7 @@ school_test = read_tsv("data/clean/school_test.tsv") %>%
   mutate(across(c("urban_centric_locale", "school_type", "charter"), 
                 factor)) %>%
   select(-c(ncessch, year, county_code)) %>%
+  filter(crimes_per1000 < max(crimes_per1000)) %>%
   mutate(crimes_per1000_sqrt = sqrt(crimes_per1000)) %>%
   select(-c(crimes_per1000))
 
@@ -101,8 +102,8 @@ rf_RMSE_sqrt = sqrt(mean((rf_predictions-school_test$crimes_per1000_sqrt)^2))
 rf_RMSE = sqrt(mean((rf_predictions^2-(school_test$crimes_per1000_sqrt)^2)^2))
 
 # evaluate Boosting RMSE
-# n.trees = 242 comes from files 5-tree-modeling, line 201
-gbm_predictions = predict(gbm_fit_tuned, n.trees = 242, 
+# n.trees = 242 comes from files 5-tree-modeling, line 188
+gbm_predictions = predict(gbm_fit_tuned, n.trees = 518, 
                               newdata = school_test) 
 gbm_RMSE_sqrt = sqrt(mean((gbm_predictions-school_test$crimes_per1000_sqrt)^2))
 gbm_RMSE = sqrt(mean((gbm_predictions^2-(school_test$crimes_per1000_sqrt)^2)^2))

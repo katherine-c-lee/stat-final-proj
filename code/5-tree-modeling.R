@@ -89,7 +89,7 @@ ggsave(filename = "results/m_oob.png",
 rf_fit_tuned = randomForest(crimes_per1000_sqrt ~ ., 
                             importance = TRUE,
                             ntree = 500,
-                            mtry = 9,
+                            mtry = 11, # from OOB error plot above
                             data = school_train1)
 save(rf_fit_tuned, file = "results/rf_fit_tuned.Rda")
 plot(rf_fit_tuned)
@@ -202,7 +202,7 @@ summary(gbm_fit_tuned,
   rename("Variable" = var, "Relative Influence" = rel.inf) %>%
   write_tsv("results/top-10-features-boosting.tsv")
 
-# partial dependence plots 
+# partial dependence plots (interaction depth 3)
 plot(gbm_fit_tuned, i.var = "avg_suspensions", n.trees = optimal_num_trees)
 plot(gbm_fit_tuned, i.var = "threats_no_weapon_incidents", 
      n.trees = optimal_num_trees)

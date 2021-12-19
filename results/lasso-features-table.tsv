@@ -1,6 +1,4 @@
 feature	coefficient
-free_reduced_lunch_per1000	0.42002888443559677
-threats_no_weapon_incidents	0.17446377069457383
-black_pop	0.1597800048236109
-threats_w_weapon_incidents	0.09843847398578753
-urban_centric_localecity	0.06832491148577534
+free_reduced_lunch_per1000	0.34741125009858503
+black_pop	0.07406887096774407
+threats_no_weapon_incidents	0.048694725690377465

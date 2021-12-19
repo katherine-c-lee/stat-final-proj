@@ -30,6 +30,7 @@ p = school_train %>%
        y = "Number of Schools") +
   theme_bw()
 p
+
 # save the histogram
 ggsave(filename = "results/response-hist-whole.png", 
        plot = p, 
@@ -46,6 +47,7 @@ p_sqrt = school_train %>%
        y = "Number of Schools") +
   theme_bw()
 p_sqrt
+
 # save the histogram
 ggsave(filename = "results/response-hist-trans.png", 
        plot = p_sqrt, 
@@ -61,18 +63,21 @@ school_train %>%
   select(school_name, crimes_per1000) %>%
   write_tsv("results/top-10-schools-data.tsv")
 
-# drop maple lane school (juvenile detention) 
+# drop maple lane school (juvenile detention facility) 
 school_train <- school_train %>%
   filter(crimes_per1000 < max(crimes_per1000))
 
 ######################## Feature-Feature Relationships ########################
 # install.packages("corrplot")
 library(corrplot)
+
 school_train_numvars_s = school_train %>%
   select(c("teachers_fte_crdc", "security_guard_fte", "salaries_teachers", 
            "expenditures_nonpersonnel", "avg_suspensions",
             "threats_w_weapon_incidents", "threats_w_firearm_incidents",
            "free_reduced_lunch_per1000"))
+
+
 corrplot(cor(school_train_numvars_s),        # Correlation matrix
          method = "shade", # Correlation plot method
          type = "upper",    # Correlation plot style (also "upper" and "lower")
@@ -86,6 +91,8 @@ school_train_numvars_c = school_train %>%
            "Unemployment_rate_2015", "white_pop",
            "black_pop", "Poverty_all_population",
            "minor_poverty", "Household_income"))
+
+
 corrplot(cor(school_train_numvars_c),        # Correlation matrix
          method = "shade", # Correlation plot method
          type = "upper",    # Correlation plot style (also "upper" and "lower")
@@ -103,6 +110,8 @@ school_train_agg = school_train %>%
            "expenditures_nonpersonnel", "avg_suspensions",
            "threats_w_weapon_incidents", "threats_w_firearm_incidents",
            "free_reduced_lunch_per1000"))
+
+
 corrplot(cor(school_train_agg),        # Correlation matrix
          method = "shade", # Correlation plot method
          type = "upper",    # Correlation plot style (also "upper" and "lower")

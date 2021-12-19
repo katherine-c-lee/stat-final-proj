@@ -9,11 +9,13 @@ school_train = read_tsv("data/clean/school_train.tsv") %>%
   mutate(across(c("urban_centric_locale", "school_type", "charter"), 
                 factor)) %>%
   select(-c(ncessch, year, county_code)) %>%
+  filter(crimes_per1000 < max(crimes_per1000)) %>%
   mutate(crimes_per1000_sqrt = sqrt(crimes_per1000)) %>%
   select(-c(crimes_per1000))
 
 ###################################### OLS #####################################
 lm_fit = lm(formula = crimes_per1000_sqrt ~ ., data = school_train)
+summary(lm_fit)
 
 ############################### RIDGE REGRESSION ###############################
 # run ridge regression
