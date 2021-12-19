@@ -1,7 +1,7 @@
 ---
-title: 'COVID-19 and County Health'
-author: 'Seokyoon Chang, Jessica Mixon, Greta Maayan Waldman (Edited by Eugene Katsevich)'
-date: 'May 2, 2021'
+title: 'School Crime and Safety'
+author: 'Katherine Lee and Mark Rauschkolb'
+date: 'December 19, 2021'
 output:
   bookdown::pdf_document2:
     number_sections: yes
@@ -18,86 +18,121 @@ library(kableExtra)
 
 \bigskip
 
-The code to reproduce this report is available [on Github](https://github.com/Katsevich-Teaching/final-project-template).
 
 \newpage
 
 # Executive Summary
 
-**Problem.** Despite the growing body of research focused on understanding the progression of COVID-19, there is still much to be learned about population-level health factors that make some populations more susceptible to COVID-19 spread, case severity, and mortality. Hence, for our final project, we decided to look into various measures of health across US counties and analyze which factors were most predictive of case fatality rate throughout 2020, the first year of the COVID-19 pandemic. While only analyzing 2020 COVID-19 data only inherently limits our results, we also note 2020 data may actually be most likely to reflect differences in healthcare quality across counties, as it was in the early months of the pandemic that many health systems faced unique issues of resource scarcity.
+**Problem.** Sandy Hook Elementary School and Santa Fe High School are synonymous with school shootings and violence. While national trends show that violence and victimization has declined from 1992 to 2017, there is a sentiment that the number of school shootings is increasing, mainly due to a steep increase in multiple-victim homicides (as opposed to single-victim homicides), revealing that the topic of school violence is still very relevant. For our final project, we decided to look into various crimes and incidents of violence across US schools throughout 2015. While only analyzing 2015 school trends inherently limits the generalizability of our results, we believe the analysis draws high-level analyses about school crime trends.
 
-**Data.** Our dataset pulled data from two sources: a New York Times time series dataset which includes cumulative counts of COVID-19 cases and deaths at the county level, and data from County Health Rankings & Roadmaps, a program focused on collecting county-level data on a variety of health determinants. For the latter data source, we pulled 2019 or older data from various datasets on their website, as many key variables we wanted to study are still missing for 2020 and we assume that most county-level health determinants stayed very similar from 2019 to 2020. Our explanatory variables span the four main categories of health factors that the program identifies: health behaviors (e.g., smoking, sexual activity), clinical care (e.g., flu vaccine rate), social and economic factors (e.g., unemployment rate), and physical environment (e.g., degree of air pollution). Our primary response variable of interest was deaths per cases, which we created by dividing county-level deaths by count-level cases.
+**Data.** Our datasets came from a variety of sources. First, we obtained school-level data from the [Urban Institute Education Portal](https://educationdata.urban.org/documentation/schools.html#overview) to see what school-specific features may be predictive of school crime. Using this portal, we were able to access data from: National Center for Education Statistics’ Common Core of Data (CCD), the Civil Rights Data Collection (CRDC), the US Department of Education’s EDFacts, and IPUMS’ National Historical Geographic Information System (NHGIS). Specifically, we pulled: school-level directory / geographic data, school finance data, teacher and staff data, discipline instances, and criminal incidences. Secondly, we also obtained county-level data to analyze any macro-trends that predict school crime. This county level data came from [US Economic Research Service](https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/) (for unemployment and poverty estimates), [US Quarterly Census of Employment and wages](https://markbergen-shiny.shinyapps.io/county_data_dashboard_v2/)(for wage data), [Census Bureau's American Community Survey](https://data.world/dmg/us-education-1970-2014) (for education data), and [Census Bureau's Demographic data](https://data.world/bdill/county-level-population-by-race-ethnicity-2010-2019) (for general demographic data). 
 
-**Analysis.** Before exploring our data or running any analyses, we split our data into a training dataset and a test dataset, with the test dataset reserved for assessing and comparing model performance. Then, we explored our data to check for normality assumptions necessary for linear regression and to assess correlations between variables and between variables and the response. In order to build an optimal predictive model, we then built six different cross-validated models: ordinary least squares, ridge regression, LASSO regression, elastic net regression, random forest, and boosting. Of the regression models, elastic net had the lowest test error and of the tree-based models, the boosted model had the lowest test error (as well as the lowest test error overall).
+All macro-data was at the county-level, each row having a unique County FIPS code. This FIPS code was used to match to each shcool's FIPS code. 
 
-**Conclusions.** Interestingly, we found that the boosted and elastic net regression both pointed to similar types of variables as the strongest predictors of deaths per cases. Specifically, our optimal boosted model revealed that variables related to residential segregation and unemployment emerged as the most significant predictors, revealing that structural economic and health access inequalities were more predictive of COVID-19 deaths per cases than other variables. We hope that this analysis can inform policies aimed at improving health outcome determinants, both in the context of COVID-19 and more generally going forward. 
+**Analysis.** Before running any analyses, we split our data into a training dataset and a testing dataset. Because of the skewed nature of our response variable, total crime incidents for a specific school, we log transformed the response, which resulted in more symmetric data. Then, we explored our data to make understand correlations between variables and the response. To understand the predictors of total crime and make a predictive model, we  built six different cross-validated models, with the end goal of selecting the best model with the best performance. Specifically, we built a ridge regression, Lasso regression, pruned regression decision tree, random forest, and boosting model. Both penalized regression models gave similar RMSEs, with the Lasso method yielding slightly better predictions. Of the tree-based models, the random forest and boosting model greatly outperformed the regular regression decision tree. The Random Forest had the lowest test error of the tree-based models, and served as the best predictive model overall.
+
+**Conclusions.** 
+
+1. As seen by our regression tree, random forest, and boosting model, school-specific features were more important predictors than county-level features. Although many macro variables (unemployment, poverty, low adult education) did correlate with school crime, these factors became less relevant when accounting for school-specific variables. I believe this is a sign that although schools may be placed in a more impoverished county, good funding, staff etc. in a school can help the school beat its precarious circumstances. Counselors and teachers can help create a safe environment for students irrelevant of the environment the school is placed in.
+
+2. Lasso penalized regression revealed two county-level variables were % of a county that identifies as being black, and the % of 5-17 year old children in poverty. I think this signals two key aspects to local government: Firstly, all kinds data repeatedly shows that marginalized minorities are afflicted by a variety of issues the most; although it is already known, we believe local government needs to remember to recognize inequalities in race when allocating funds. Next, we believe it is important to track teenage poverty specifically - helping families that are sustaining younger children and adolescents could reduce crime and improve school systems.
+
+3. How much a school is suspending its students is the most important variable in our regression tree, random forest, and boosting models. We believe the department of education should investigate this phenomenon more. There may be reverse causation (a lot of crime results in higher suspension rates) however, after some research we found a many analyses that corroborate that suspensions may actually be causing worse behavior such as [this](https://www.nassp.org/publication/principal-leadership/volume-22-2021-2022/principle-leadership-october-2021/suspension-is-not-the-answer/) National Association of School Psychologists article, or [this](https://www.nea.org/advocating-for-change/new-from-nea/school-suspensions-do-more-harm-good) National Education Association article, both of which explains how suspension creates a vicious cycle: antagonizing students, sending them away school to school which often lead to long-periods of unsupervised time, more crime upon returning to school, and a subsequent suspension. Reform on this traditional reprimand method could be a cost-free method of greatly reducing crime rates.  
+
+4. Investments in teachers and counselors seem to be the most important. Variables such as security guards, law enforcement, administration, and nonpersonnel expenditures did not prove to be important in any of our models. On the other hand, larger investment in teachers and counselors (those who directly interact with students) did show importance. I believe this is extremely important for school boards to consider when allocating budgets.  
 
 # Introduction
 
-**Background.** Coronavirus disease (COVID-19) has had a devastating global impact, with a cumulative total of 149,987,772 confirmed cases and 3,157,594 deaths worldwide as of April 28, 2021.^[Coronavirus Cases: Worldometer. (n.d.). https://www.worldometers.info/coronavirus/. 
-] About a fifth of these cases have been in the United States, with a recent count of 32,551,440 cases and 582,668 deaths.^[Ibid.] With these staggering numbers still increasing despite recent large-scale vaccine rollouts, it is of vital importance to utilize various data sources to understand both the progression of COVID-19 thus far as well as the highest risk factors for contracting COVID-19. Furthermore, a thorough analysis of COVID-19 rates and predictive factors may help inform strategies to improve public health policies that could mitigate the negative impact of a future pandemic, which many scientists say is not a matter of if but of when.^[Robbins, J. (2021, January 4). Heading Off the Next Pandemic. Kaiser Health News. https://khn.org/news/infectious-disease-scientists-preventing-next-pandemic/. ]
+**Background.** School violence has always been a part of the United States' education system. From 2017-2018, 80% of public schools recorded one or more incidents of violence, translating to a crime rate of 29 incidents per 1,000 students enrolled.^[School Crime: Fast Facts. (n.d.). https://nces.ed.gov/fastfacts/display.asp?id=49.] 
+Not all recorded incidents of violence and crimes were reported to the police, suggesting that the crime rate in America's schools is even higher. While the total victimization rate and the rates of specific crimes have declined since 1992, crime rates are still high, suggesting it is of vital importance to utilize various data sources to understand the highest risk factors for school crimes. Furthermore, a thorough analysis of school crime rates and predictive factors may help inform strategies to improve school safety precautions. Establishing reliable indicators of school crime and safety are important in ensuring the safety of schools across America.
 
-Past research has shown that infectious diseases are influenced by a variety of factors. Obesity, for instance, is associated with a higher likelihood of contracting influenza A, and seasonal temperature changes have shown to be predictive of the 2003 severe acute respiratory syndrome (SARS).^[Tian, T., Zhang, J., Hu, L., Jiang, Y., Duan, C., Li, Z., ... & Zhang, H. (2021). Risk factors associated with mortality of COVID-19 in 3125 counties of the United States. Infectious diseases of poverty, 10(1), 1-8.] The CDC is currently in the process of identifying potential risk factors for severe COVID-19 illness,^[Centers for Disease Control and Prevention. (n.d.). Assessing Risk Factors for Severe COVID-19 Illness. Centers for Disease Control and Prevention. https://www.cdc.gov/coronavirus/2019-ncov/covid-data/investigations-discovery/assessing-risk-factors.html.] and some that have already been identified include heart disease, diabetes, and pregnancy.^[Centers for Disease Control and Prevention. (n.d.). Certain Medical Conditions and Risk for Severe COVID-19 Illness. Centers for Disease Control and Prevention. https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-with-medical-conditions.html.] Yet despite these efforts, there is still much to be learned. Specifically, there is still insufficient research to explain the differences in COVID-19 susceptibility and mortality that exist not just on the individual level but also on broader population levels. 
+Prior research and articles have shown that school crime are influenced by a variety of factors. For example, research has shown that higher use of police in schools is associated with more school crimes.^[Gottfredson, D., Na, C., (2011). Police Officers in Schools: Effects on School Crime and the Processing of Offending Behaviors] Moreover, trends show that students residing in rural areas had higher rates of total victimization than students residing in suburban areas, suggesting crime rate differences across school geographies.^[National Center for Education Statistics. (n.d.). Indicators of School Crime and Safety: 2015. https://bjs.ojp.gov/content/pub/pdf/iscs15.pdf] Despite past research, there is much more to be learned and there is insufficient research regarding school crime rates and school-specific features.
 
-**Analysis goals.** Given our knowledge of the capacity for a variety of factors to influence infectious disease spread as well as the fact that different counties in the US have differing levels of baseline health factors, we sought to investigate how rates of COVID-19 cases and deaths across the US are affected by various measures of community health. Specifically, we were interested in which kinds of factors (e.g., clinical, behavioral, health)—and which specific variables—are most predictive of deaths per cases (also known as case fatality rate). 
+**Analysis goals.** Given school crime can be attributed to a variety of factors, including both school-specific variables and demographic variables, we explored how total crime rates (total crime per 1000 enrolled students) are affected by various school and demographic features. Specifically, we were interested in what kind of factors, either school-specific or demographic-specific, and which specific variables are most predictive in school crime rates.
 
-**Significance.** We hope that our analysis will contribute to the growing body of research on COVID-19 risk factors by expanding our understanding of COVID-19 and supporting efforts to mitigate the risk of future pandemics. Our results also shed light on the importance of analyzing social determinants of health in efforts to improve health outcomes. 
+**Significance.** Our analysis will contribute to research regarding school crime risk factors and inform government officials of what factors are predictive of school crime. This will help support efforts to minimize school crime and improve school safety. 
 
 # Data
 
 ## Data sources
 
-Our dataset merged data from two sources: a dataset on US county-level health and a COVID-19 dataset that includes average cases and deaths per county. Each data source includes data from January 2020 to December 2020. 
+Our dataset was merged from data from the following sources: 1) [Urban Institute Education Portal](https://educationdata.urban.org/documentation/schools.html#overview), 2) [US Economic Research Service](https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/), 3) [US Quarterly Census of Employment and wages](https://markbergen-shiny.shinyapps.io/county_data_dashboard_v2/), 4) [Census Bureau's American Community Survey](https://data.world/dmg/us-education-1970-2014), and 5) [Census Bureau's Demographic data](https://data.world/bdill/county-level-population-by-race-ethnicity-2010-2019). Each data source includes multiple years of data, and we chose to focus on 2015 data since there were the most number of available features for that year.
 
-The data regarding the health status of each county comes from County Health Rankings & Roadmaps, a program founded by the Robert Wood Johnson Foundation in collaboration with the University of Wisconsin Population Health Institute.^[County Health Rankings & Roadmaps. (n.d.) https://www.countyhealthrankings.org/] The program was designed to support community leaders in fostering equitable health outcomes by raising awareness about the variety of factors that influence length and quality of life, including economic and social factors. Specifically, the program considers all of the counties in the United States and includes measures of health behaviors, clinical care, social and economic factors, and the physical environment. In order to ensure a wide variety of explanatory variables in our dataset across the aforementioned categories, we pulled variables from the compiled dataset available on the program’s website and merged these variables into our final dataset.^[County Health Rankings & Roadmaps. (n.d.) 2021 Measures. https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/2021-measures]
+The data regarding school-specific features came from the [Urban Institute Education Portal](https://educationdata.urban.org/documentation/schools.html#overview). The data from the portal was pulled from a variety of sources, including the National Center for Education Statistics' CCD, the CRDC, the US Department of Education's EDFacts, and IPUMS' NHGIS. In order to ensure a wide range of explanatory variables in our dataset, we pulled 2015 variables across the following categories: school directory, demographic, finance, teacher and staff, and discipline data, in addition to our response variable, which came from the criminal data. After pulling these datasets, we merged the variables into a final dataset by each school's National Center for Education Statistics (NCES) identification number (a unique school identifier).
 
-The other dataset we drew from is the New York Times COVID-19 tracking dataset that includes cumulative COVID-19 cases and deaths in the United States at the county level.^[The New York Times Github. (n.d.) nytimes/covid-19-data. https://github.com/nytimes/covid-19-data] This time series dataset, compiled from state and local governments and health departments, includes data beginning from the first reported coronavirus case in Washington on Jan. 21, 2020. Times notes that because of the widespread shortage of testing in the first few months of the pandemic, the true COVID-19 prevalence—for those few months especially—may not be accurately represented in the data.  
+Because we were also interested in broader demographic data, we drew from various government and census datasets, including: [US Economic Research Service](https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/), [US Quarterly Census of Employment and Wages](https://markbergen-shiny.shinyapps.io/county_data_dashboard_v2/) [ mark this link is broken ], [Census Bureau's American Community Survey](https://data.world/dmg/us-education-1970-2014), and [Census Bureau's Demographic data](https://data.world/bdill/county-level-population-by-race-ethnicity-2010-2019). The US Economic Research Service provided county-level unemployment and poverty estimates. The unemployment rates were recorded from 2000 to 2020, and the only poverty estimates available were from 2019. Because the rest of our data is of 2015, we assume that poverty estimates from 2015 are reasonably similar to those from 2019. We extracted data from 2015 in the unemployment data and the 2019 poverty estimates for our data analysis. The US Quarterly Census of Employment and Wages [ ]. From the CEnsus Bureau's American Community Survey, we obtained US education figures [ links seem off this link looks like it's up until 2014 but the analysis has 2015-2019 data]????
 
 ## Data cleaning
 
-Our central task in the data cleaning phase of the project was merging the data from the two sources described above. Both data sources provided their respective data on a county level (classified as a 5-digit FIPS code). For each county in the New York Times COVID-19 dataset, the numbers of deaths and cases of COVID-19 were aggregated across 2020. We merged the two datasets on the county level, and then calculated the explanatory variables in accordance with the County Health Rankings Data Documentation. For the most part, the latter step consisted of dividing raw counts of a variable by the population of interest for the variable to calculate a percentage. 
+For data cleaning, we started by examining each dataset in depth to determine which features and observations to keep. 
+
+In the school-specific datasets, we first transformed all negative values to NA values, since negative values imply that the data was missing/not reported or not applicable, per the Education Data Portal. Then we dropped all features that had more than 85% NA values, and dropped repeat observations and observations with any NA feature values. We dropped NA values for consistency purposes, as many of the data mining methods we employed require that all variables be populated with non-NA fields. In the directory dataset, one important feature is the degree of urbanization (urban-centric locale) of the school, which was coded with 12 levels, so we collapsed the categorical variable into 4 broader levels, including city, suburb, town, and rural. After cleaning each individual dataset, we merged the school-specific sets by the schools' unique NCES identification number. 
+
+For the macro-level county datasets, we first filtered the data to include only 2015 data (except poverty estimates because 2015 data was not available). We renamed variables for clarity and computed various race metrics as a percentage of population for comparability purposes. Each school is associated with a county-specific FIPS code and the macro-level county data includes observations for each county, which allowed us to merge in the macro-level county data in with the school-specific data, resulting in our final dataset that we used for analysis.
 
 ## Data description
 
 ### Observations
 
-Our dataset has a total of 935 observations, corresponding to each of the counties included in our analysis.
+Our cleaned and merged final dataset has a total of 66694 observations, corresponding to each of the schools included in our analysis.
 
 ### Response Variable
 
-Our response variable is the cumulative COVID-19 deaths per cases for each county in the US. We created this variable via a simple mutate operation of cumulative cases per county divided by cumulative deaths per county. We use deaths per cases as our response variable as a proxy for case severity in different counties across the United States, as it inherently controls for population size variability. We do acknowledge, however, that using a single COVID-19 metric may not account for underlying heterogeneities between subgroups in each county, a bias that results from varied distributions within and between populations.^[U.S. News & World Report. (n.d.). COVID-19 Death Rate | Healthiest Communities. U.S. News & World Report. https://www.usnews.com/news/healthiest-communities/coronavirus-data/covid-death-rate?chart_type=line.]
+Our response variable is the number of crimes per 1000 students enrolled (square root transformed). In the criminal incident dataset, we created our response variable by summing rape incidents, sexual battery incidents, robberies and attacks to get a high level variable that captured crime rates. We also transformed the total crime figure to be per 1000 students enrolled (by dividing by the school's enrollment and then multiplying by 1000), to improve comparability of schools on a 'per student enrolled' basis as it inherently controls for school size variability. Then we square root transformed the response to obtain a more "symmetric" variable. 
 
 ### Features
 
-Drawing on data from County Health Rankings & Roadmaps, we included 41 explanatory variables in our analysis, which fall into four main categories: health behaviors, clinical care, social and economic factors, and physical environment. For a detailed specification of these variables, refer to Appendix \@ref(appendix).
+In our dataset, we included 46 explanatory variables in our analysis, which fall into two broad categories: school-specific factors and macro/county-level factors. For a detailed specification of these variables, refer to Appendix \@ref(appendix).
 
 ## Data allocation
 
-Before building our predictive models, we first removed observations from the dataset for which any variables had NA values. We decided to do this for consistency purposes, as some data analysis methods we employed require that no variables contain NA fields. We then split our dataset into two subsets: a training dataset used for building our predictive models and a test dataset used for evaluating our models. We used an 80-20 split, such that the training dataset consists of 80% of our observations and the dataset consists of 20% of our observations. Although this train-test split was performed separately for each class of methods, we utilized a random seed to ensure that each split led to the same results. 
+After data cleaning, we split our dataset into a training dataset and a testing dataset. We used an 80-20 split, such that the training set consists of 80% of the observations and the testing set consists of the other 20% of the observations. The training dataset was used for building our predictive models and the testing dataset was used for model evaluation.  subsets: a training dataset used for building our predictive models and a test dataset used for evaluating our models. 
 
 ## Data exploration
 
 ### Response
 
-We first sought to understand the response variable’s distribution. As seen in the histogram of deaths variable (Figure \@ref(fig:response-histogram)), the data appears to be right-skewed, with some counties exceeding a death per cases rate of 0.1.  The median deaths per cases is 0.018. We proceeded to determine which counties had extreme response rates by looking at the sorted data. The sorted data (Table \@ref(tab:top-10-counties)) shows that aggregated across 2020, the highest rates of deaths per cases were primarily in northeastern states such as New York, New Jersey, and Connecticut.
+We first explored the response variable's distribution. As seen in the histogram of total crimes per 1000 students variable (Figure \@ref(fig:response-histogram)). The histogram is very right-skewed, indicating that the dataset contains a number of outliers with extremely high crime rates. The mean is 19.3 crimes per 1000 enrolled students. To account for this, we square root transformed the response variable, which resulted in a distribution shown in Figure \@ref(fig:response-histogram-transformed)). For our analyses and model building, we used the transformed response.
 
-```{r response-histogram, out.width = "80%", fig.cap = "Distribution of case-fatality rate; vertical dashed line indicates the median.", fig.align='center', echo = FALSE}
-knitr::include_graphics("../results/response-histogram.png")
+We proceeded to determine which schools had extreme response rates by looking at the sorted data. The sorted data (Table \@ref(tab:top-10-schools)) shows that Maple Lane School had the highest crime rate by far, more than double the second highest ranked school. Further research shows that Maple Lane School was a juvenile corrections facility that closed in 2010, indicating that the observation should not be in the dataset to begin with.^[Turn Maple Lane into prison center? Allen, Marqise. https://www.theolympian.com/news/local/article25274248.html] To account for this, we dropped Maple Lane School from the training set.
+
+```{r response-histogram, out.width = "60%", fig.cap = "Distribution of Crime Rate; vertical dashed line indicates the mean.", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/response-hist-whole.png")
 ```
 
-```{r top-10-counties, message = FALSE, echo = FALSE}
-read_tsv("../results/top-10-counties-data.tsv") %>%
+```{r response-histogram-transformed, out.width = "60%", fig.cap = "Sqrt Transformed Distribution of Crime Rate; vertical dashed line indicates the mean.", fig.align='center', echo = FALSE, fig.pos = "H"}
+knitr::include_graphics("../results/response-hist-trans.png")
+```
+
+```{r top-10-schools, message = FALSE, echo = FALSE}
+read_tsv("../results/top-10-schools-data.tsv") %>%
   kable(format = "latex", row.names = NA, 
         booktabs = TRUE, digits = 2, 
-        col.names = c("County", "State", "Case-fatality rate"),
-        caption = "Top ten counties by case-fatality rate 
-        (expressed as a percentage).") %>%
+        col.names = c("School", "Crimes per 1000 Students"),
+        caption = "Top ten schools by crime rate 
+        (expressed as per 1000 students).") %>%
   kable_styling(position = "center")
 ```
 
 ### Features
 
-[Omitted from template.]
+Next, we explored high-level relationships and correlations of the predictor variables with the response variable. We first looked at correlations between a few school-specific features, as shown in Figure \@ref(fig:school-corrplot)). We observe a positive correlation between the number of full-time equivalent teachers and the number of full-time equivalent security guards as well as teacher salaries. We also a negative correlation between the number of full-time equivalent teachers and the number of students enrolled in free or reduced lunch. Moreover, there is a negative correlation between teacher salaries and the number of students enrolled in free or reduced lunch. 
+
+```{r school-corrplot, out.width = "60%", fig.cap = "School-Specific Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+#knitr::include_graphics("../results/school-corrplot.png")
+```
+
+We also looked at correlations between some county-level features, as shown in Figure \@ref(fig:county-corrplot). [ mark add commentary ]
+
+```{r county-corrplot, out.width = "60%", fig.cap = "County-Level Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+#knitr::include_graphics("../results/county-corrplot.png")
+```
+
+We also examined correlations across the different categories of variables (both school-specific and county-level) as shown in Figure \@ref(fig:county-school-corrplot). Notably, there is a negative correlation between the number of full-time equivalent teachers and the percent of population who attended only high school. [ mark finish adding commentary ]
+
+```{r county-school-corrplot, out.width = "60%", fig.cap = "School-Specific and County-Level Features Correlation Plot", fig.align='center', echo = FALSE, fig.pos = "H"}
+#knitr::include_graphics("../results/county-school-corrplot.png")
+```
 
 # Modeling
 
@@ -117,11 +152,11 @@ For the lasso, Figure \@ref(fig:lasso-CV-plot) shows the CV plot, Figure \@ref(f
 
 
 ```{r lasso-CV-plot, out.width = "90%", fig.cap = "Lasso CV plot.", fig.align='center', echo = FALSE}
-knitr::include_graphics("../results/lasso-cv-plot.png")
+#knitr::include_graphics("../results/lasso-cv-plot.png")
 ```
 
 ```{r lasso-trace-plot, out.width = "90%", fig.cap = "Lasso trace plot.", fig.align='center', echo = FALSE}
-knitr::include_graphics("../results/lasso-trace-plot.png")
+#knitr::include_graphics("../results/lasso-trace-plot.png")
 ```
 
 ```{r lasso-coefficients, message = FALSE, echo = FALSE}
@@ -134,6 +169,20 @@ read_tsv("../results/lasso-features-table.tsv") %>%
   kable_styling(position = "center")
 ```
 
+Following are the results for tree based methods:
+
+```{r}
+
+read_tsv("../results/model-evaluation-regression.tsv") %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 2, 
+        col.names = c("Method", "RMSE (Log)", "RMSE"),
+        caption = "RMSE summary for Regression based methods") %>%
+  kable_styling(position = "center")
+
+```
+
+
 ## Tree-based methods
 
 [Omitted from template.]
@@ -142,15 +191,27 @@ read_tsv("../results/lasso-features-table.tsv") %>%
 
 ### Boosting
 
+```{r}
+
+read_tsv("../results/model-evaluation-tree.tsv") %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 2, 
+        col.names = c("Method", "RMSE (Log)", "RMSE"),
+        caption = "RMSE summary for Tree based methods") %>%
+  kable_styling(position = "center")
+
+```
+
 # Conclusions
 
 ## Method comparison
 
 ```{r model-evaluation, message = FALSE, echo = FALSE}
-read_tsv("../results/model-evaluation.tsv") %>%
-  kable(format = "latex", row.names = NA,
-        booktabs = TRUE, digits = 2,
-        caption = "Root-mean-squared prediction errors for lasso and ridge regressions.") %>%
+read_tsv("../results/model-evaluation-total.tsv") %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 2, 
+        col.names = c("Method", "RMSE"),
+        caption = "RMSE summary for all data minig methods used") %>%
   kable_styling(position = "center")
 ```
 
@@ -186,28 +247,44 @@ To compensate for the limitations mentioned above, more extensive analysis can b
 
 # Appendix: Descriptions of features {#appendix}
 
-Below are the 41 features we used for analysis. Words written in parentheses represent variable names. Unless noted otherwise, all variables are continuous. 
+Below are the 45 features we used for analysis. Words written in parentheses represent variable names. Unless noted otherwise, all variables are continuous. 
 
-**Health behaviors:** 
+**School-Specific Variables:** 
 
-- *Tobacco Use*
-  - Adult smoking (`smoke_perc`): Percentage of adults who are current smokers.
-- *Diet and Exercise* 
-  - Adult obesity (`obesity_perc`): Percentage of the adult population (age 20 and older) reporting a body mass index (BMI) greater than or equal to 30 kg/m2.
-  - Food environment index (`food_environment`): Index of factors that contribute to a healthy food environment, from 0 (worst) to 10 (best).
-  - Physical inactivity (`inactive_perc`): Percentage of adults age 20 and over reporting no leisure-time physical activity.
-  - Access to exercise opportunities (`physical_exercise_opportunities`): Percentage of population with adequate access to locations for physical activity
-  - Food insecurity (`Food_Insecure_perc`): Percentage of population who lack adequate access to food.
-  - Limited access to healthy foods (`limited_healthy_access`): Percentage of population who are low-income and do not live close to a grocery store.
-- *Alcohol & Drug Use*
-  - Excessive Drinking (`drinking_perc`): Percentage of adults reporting binge or heavy drinking.
-- *Sexual Activity*
-  - Sexually transmitted infections (`stis`): Number of newly diagnosed chlamydia cases per 100,000 population.
-  - Teen births (`teen_births`): Number of births per 1,000 female population ages 15-19.
-  - Low Birth Weight Percentage (`low_birthweight_percentage`): Percentage of live births with low birthweight (< 2,500 grams).
+- *Geography*
+  - Urbanization (`urban_centric_locale`): Factor variable representing the degree of urbanization. Factors include schools located in: cities, rural areas, suburbs, and towns.
+- *School Attributes* 
+  - School type (`school_type`): Factor variable representing the school type. Factors include: regular schools, special education schools, and vocational schools. 
+  - Charter school (`charter`): Binary variable representing whether the school is a charter school (1) or not a charter school (0). 
+  - Students eligible for free or reduced-price lunch (`free_reduced_lunch_per1000`): Number of students eligible for free or reduced-price lunch per 1000 enrolled students.
+- *Teacher and Staff*
+  - Full-time equivalent teachers (Civil Rights Data Collection) (`teachers_fte_crdc`): Number of full-time equivalent teachers.
+  - Full-time equivalent certified teachers (`teachers_certified_fte`): Number of full-time equivalent certified teachers.
+  - Full-time equivalent uncertified teachers (`teachers_uncertified_fte`): Number of full-time equivalent uncertified teachers.
+  - Full-time equivalent first-year teachers (`teachers_first_year_fte`): Number of full-time equivalent first-year teachers.
+  - Full-time equivalent second-year teachers (`teachers_second_year_fte`): Number of full-time equivalent second-year teachers.
+  - Current school year teachers (`teachers_current_sy`): Number of current school year teachers.
+  - Previous school year teachers (`teachers_previous_sy`): Number of previous school year teachers.
+  - Full-time equivalent teachers absent more than 10 school days (`teachers_absent_fte`): Number of full-time equivalent teachers absent more than 10 school days
+  - Full-time equivalent school counselors (`counselors_fte`): Number of full-time equivalent school counselors.
+  - Full-time equivalent psychologists (`psychologists_fte`): Number of full-time equivalent psychologists.
+  - Full-time equivalent social workers (`social_workers_fte`): Number of full-time equivalent social workers.
+  - Full-time equivalent nurses (`nurses_fte`): Number of full-time equivalent nurses.
+  - Full-time equivalent security guards (`security_guard_fte`): Number of full-time equivalent security guards.
+  - Sworn law enforcement officers indicator (`law_enforcement_ind`): Indicator of whether a sworn law enforcement officer has been assigned to the school.
+  - Teacher salaries (`salaries_teachers`): Personnel salaries at school level (teachers only) amount.
+- *School Finance*
+  - Non-personnel expenditures (`expenditures_nonpersonnel`): Amount of non-personnel expenditures. May include: professional development for teachers, computers, library books, and other learning materials.  
+- *Criminal Activity*
+  - Threats of physical attack with a weapon (`threats_w_weapon_incidents`): Number of incidents of threats of physical attack with a weapon.
+  - Threats of physical attack with a firearm or explosive device (`threats_w_firearm_incidents`): Number of incidents of threats of physical attack with a firearm or explosive device.
+  - Threats of physical attack without a weapon (`threats_no_weapon_incidents`): Number of incidents of threats of physical attack without a weapon.
+  - Possession of a firearm or explosive device (`possession_firearm_incidents`): Number of incidents of possession of a firearm or explosive device.
+- *School Discipline*
+  - Suspensions (`avg_suspensions`): Number of student suspensions.
 
-**Clinical care:**
-
+**County-Level Variables:**
+[ mark to do ]
 - *Access to Care*
   - Uninsured (`uninsured`): Percentage of population under age 65 without health insurance.
   - Primary care physicians (`primarycare_ratio`): Ratio of population to primary care physicians.
