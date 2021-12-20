@@ -14,6 +14,7 @@ school_train = read_tsv("data/clean/school_train.tsv") %>%
 library(rpart)             # install.packages("rpart")
 library(rpart.plot)        # install.packages("rpart.plot")
 
+set.seed(1)
 tree_fit = rpart(crimes_per1000_sqrt ~ ., data = school_train)
 printcp(tree_fit)
 cp_table = printcp(tree_fit) %>% as_tibble()
@@ -36,8 +37,9 @@ ggsave(filename = "results/treenodes_cv_error.png",
        height = 4)
 
 # extract the optimal lambda
-optimal_tree_info = cp_table %>%
-  arrange(xerror) %>%
+optimal_tree_info = cp_table %>% 
+  filter(xerror - xstd < min(xerror)) %>% 
+  arrange(nsplit) %>% 
   head(1)
 optimal_tree_info
 
