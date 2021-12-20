@@ -180,8 +180,7 @@ read_tsv("../results/lasso-features-table.tsv") %>%
 knitr::include_graphics("../results/lasso-trace-plot.png")
 ```
 
-[ why is this here ]
-Following, in \@ref(tab:regression-eval) are the results for tree based methods:
+Following in Table \@ref(tab:regression-eval) are the results for tree based methods:
 
 ```{r regression-eval, message = FALSE, echo = FALSE}
 read_tsv("../results/model-evaluation-regression.tsv") %>%
@@ -222,6 +221,7 @@ knitr::include_graphics("../results/rf_fit.png")
 For the purpose of tuning $m_{try}$, we select 500 trees. We tune $m_{try}$ using a systematic approach by choosing a grid of values of $m_{try}$ and plotting the OOB error for 500 trees. Specifically, we trained the model using $m_{try}$ values ranging from 1 to 30. The OOB error for each value of $m_{try}$ is visualized in Figure \@ref(fig:mtune). By observation, the OOB error is minimized at a value of $m_{try} = 11$. After reaching a minimum at this value, the OOB error begins to exhibit overfitting as it begins to trend upward. 
 
 ````{r mtune, out.width = "60%", fig.cap = "Tuned Random Forest OOB (m = 11)", fig.align='center', echo = FALSE, fig.pos = "H"}
+
 knitr::include_graphics("../results/rf_fit_tuned.png")
 ```
 
